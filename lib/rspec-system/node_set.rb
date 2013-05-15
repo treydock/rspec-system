@@ -5,12 +5,12 @@ module RSpecSystem
     #
     # @return [RSpecSystem::NodeSet::Base] returns an object based on the Base
     #   abstract class.
-    def self.create(setname, config, virtual_env)
+    def self.create(setname, config, virtual_env, custom_prefabs_path)
       case(virtual_env)
       when 'vagrant'
-        RSpecSystem::NodeSet::Vagrant.new(setname, config)
+        RSpecSystem::NodeSet::Vagrant.new(setname, config, custom_prefabs_path)
       when 'vsphere'
-        RSpecSystem::NodeSet::Vsphere.new(setname, config)
+        RSpecSystem::NodeSet::Vsphere.new(setname, config, custom_prefabs_path)
       else
         raise "Unsupported virtual environment #{virtual_env}"
       end

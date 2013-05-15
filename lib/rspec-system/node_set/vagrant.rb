@@ -13,7 +13,8 @@ module RSpecSystem
     #
     # @param setname [String] name of the set to instantiate
     # @param config [Hash] nodeset configuration hash
-    def initialize(setname, config)
+    # @param custom_prefabs_path [String] path of custom prefabs yaml file
+    def initialize(setname, config, custom_prefabs_path)
       super
       @vagrant_path = File.expand_path(File.join(RSpec.configuration.system_tmp, 'vagrant_projects', setname))
     end
@@ -122,22 +123,22 @@ module RSpecSystem
       log.info "[Vagrant#create_vagrantfile] Creating vagrant file here: #{@vagrant_path}"
       FileUtils.mkdir_p(@vagrant_path)
       File.open(File.expand_path(File.join(@vagrant_path, "Vagrantfile")), 'w') do |f|
-        f.write('Vagrant::Config.run do |c|')
+        f.write("Vagrant::Config.run do |c|\n")
         nodes.each do |k,v|
           log.debug "Filling in content for #{k}"
 
           ps = v.provider_specifics['vagrant']
 
-          f.write(<<-EOS)
-  c.vm.define '#{k}' do |v|
-    v.vm.host_name = '#{k}'
-    v.vm.box = '#{ps['box']}'
-    v.vm.box_url = '#{ps['box_url']}'
-    v.vm.base_mac = '#{randmac}'
-  end
-          EOS
+          node_config = "  c.vm.define '#{k}' do |v|\n"
+          node_config << "    v.vm.host_name = '#{k}'\n"
+          node_config << "    v.vm.box = '#{ps['box']}'\n"
+          node_config << "    v.vm.box_url = '#{ps['box_url']}'\n" unless ps['box_url'].nil?
+          node_config << "    v.vm.base_mac = '#{randmac}'\n"
+          node_config << "  end\n"
+
+          f.write(node_config)
         end
-        f.write('end')
+        f.write("end\n")
       end
       log.debug "[Vagrant#create_vagrantfile] Finished creating vagrant file"
       nil
