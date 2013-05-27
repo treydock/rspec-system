@@ -6,6 +6,7 @@ module RSpecSystem
   # A NodeSet implementation for Vagrant.
   class NodeSet::Vagrant < RSpecSystem::NodeSet::Base
     include RSpecSystem::Log
+    include RSpecSystem::Util
 
     ENV_TYPE = 'vagrant'
 
@@ -69,7 +70,7 @@ module RSpecSystem
       ssh_channels = RSpec.configuration.ssh_channels
       puts "-----------------"
       puts "#{dest}$ #{cmd}"
-      result = ssh_exec!(ssh_channels[dest], "cd /tmp && sudo sh -c '#{cmd}'")
+      result = ssh_exec!(ssh_channels[dest], "cd /tmp && sudo sh -c #{shellescape(cmd)}")
       puts "-----------------"
       result
     end
