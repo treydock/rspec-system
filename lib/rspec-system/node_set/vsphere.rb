@@ -15,7 +15,9 @@ module RSpecSystem
     #
     # @param setname [String] name of the set to instantiate
     # @param config [Hash] nodeset configuration hash
-    def initialize(setname, config)
+    # @param custom_prefabs_path [String] path of custom prefabs yaml file
+    # @param options [Hash] options Hash
+    def initialize(setname, config, custom_prefabs_path, options)
       super
       @vim = RbVmomi::VIM.connect(
         :host => ENV["RSPEC_VSPHERE_HOST"],
@@ -133,14 +135,19 @@ module RSpecSystem
         ssh = storage[:ssh]
         ssh.close unless ssh.closed?
 
-        log.info "[Vsphere#teardown] destroy instance #{k}"
-        vm = storage[:vm]
-        if vm == nil
-          puts "No vm object"
+        if destroy
+          log.info "[Vsphere#teardown] destroy instance #{k}"
+          vm = storage[:vm]
+          if vm == nil
+            puts "No vm object"
+            next
+          end
+          vm.PowerOffVM_Task.wait_for_completion
+          vm.Destroy_Task.wait_for_completion
+        else
+          log.info "[Vsphere#teardown] Skipping destroy instance #{k}"
           next
         end
-        vm.PowerOffVM_Task.wait_for_completion
-        vm.Destroy_Task.wait_for_completion
       end
 
       nil
