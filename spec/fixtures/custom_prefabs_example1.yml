@@ -1,0 +1,22 @@
+---
+'scientific-64-x64':
+  description: ""
+  facts:
+    kernelrelease: "2.6.32-358.el6.x86_64"
+    operatingsystem: Scientific
+    kernelmajversion: "2.6"
+    architecture: x86_64
+    facterversion: "1.7.0"
+    kernelversion: "2.6.32"
+    operatingsystemrelease: "6.4"
+    osfamily: RedHat
+    kernel: Linux
+    rubyversion: "1.8.7"
+  provider_specifics:
+    vagrant:
+      box: 'scientific-64-x64-vb4210-nocm'
+'centos-64-x64':
+  provider_specifics:
+    vagrant:
+      box: 'centos-64-x64-vbox4210'
+      box_url: 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box'
