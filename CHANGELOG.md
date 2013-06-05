@@ -1,3 +1,38 @@
+1.6.0
+=====
+
+This minor feature release now adds test counts to the rspec-system formatter, for example:
+
+    Running test: 21 of 22
+
+So you can see mid-flight where the testing is up to.
+
+#### Detailed Changes
+
+* Present test count in formatter (Ken Barber)
+
+-------------------------------
+
+1.5.0
+=====
+
+This release renames the helpers to something more succinct:
+
+* shell (was system_run)
+* rcp (was system_rcp)
+* node (was system_node)
+
+This patch also deprecates the system_setup_block in favour of before :suite instead.
+
+In the next major release, the old helpers and system_setup_block will stop working so it is recommended to look out for the deprecation messages and adjust your code now so that the next major release (2.x) will continue to work.
+
+#### Detailed Changes
+
+* Deprecate usage of system_setup_block (Ken Barber)
+* Rename old helpers to shell, node, rcp (Ken Barber)
+
+-------------------------------
+
 1.4.0
 =====
 
