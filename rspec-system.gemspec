@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "net-ssh", '~>2.6'
   s.add_runtime_dependency "net-scp"
   s.add_runtime_dependency "rbvmomi"
+  s.add_runtime_dependency "thor"
 end
